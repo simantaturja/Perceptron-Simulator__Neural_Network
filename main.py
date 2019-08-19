@@ -21,7 +21,7 @@ line, = ax.plot([], [])
 points, animXLine, animYLine = [], [], []
 a, b, c = 2, 3, 7
 xLowLimit, xHighLimit, yLowLimit, yHighLimit = lowlim, highlim, lowlim, highlim
-iteration, dataset = 1, 300
+dataset = 300
 brain = perceptron.Perceptron()
 
 def pointGeneration(a, b, c):
@@ -32,7 +32,6 @@ def pointGeneration(a, b, c):
         i = i + 1
 
 def pointShow():
-    global points
     for p in points:
         if ( p.target == 1 ):
             ax1.plot(p.x, p.y, 'go', markersize=10, markeredgecolor = 'k')
@@ -50,15 +49,18 @@ def mainLine(a, b, c):
 def training():
     brain = perceptron.Perceptron()
     i = 0
+    iteration = 1
     while( i < iteration ):
         for p in points:
             inputs = [p.x, p.y, p.bias] #bias = 1
             predict = brain.guess(inputs)
-            w0, w1, w2 = brain.guessLine()
-            yLow = -(w2 / w1) - (w0 / w1) * xLowLimit
-            yHigh = -(w2 / w1) - (w0 / w1) * xHighLimit
+
+            #Getting the predicted line by the neural network
+            yLow, yHigh = brain.guessLine()
             animXLine.append([xLowLimit, xHighLimit])
             animYLine.append([yLow, yHigh])
+
+            #Train the neural network
             error = p.target - predict
             brain.train(inputs, error)
         i = i + 1
@@ -73,17 +75,6 @@ def training():
             ax.plot(p.x, p.y, 'ro', label = 'wrong', markersize = 10, markeredgecolor = 'k')
 
 
-#Animation Part
-
-def init():
-    line.set_data([], [])
-    return line,
-
-def animate(i, animX, animY):
-    print(i+1)
-    line.set_data(animX[i], animY[i])
-    return line,
-
 def userInput():
     global a, b, c
     a = int(input('Co-Efficient of x: '))
@@ -96,12 +87,30 @@ def process():
     pointShow()
     training()
 
+#Animation Functions
+
+def init():                             #animation initializing function
+    line.set_data([], [])
+    return line,
+
+
+def animate(i, animX, animY):           #animation update function
+    print(i+1)
+    line.set_data(animX[i], animY[i])
+    return line,
+
+#Animation Functions (End)
+
 
 if __name__ == '__main__':
+    #Take Input from Users ( Line Equation: coefficient for x, y and constant c)
     #userInput()
+
+    #Main process starts
     process()
 
+    #main animation function
     anim = animation.FuncAnimation(fig, animate, init_func = init, fargs=(animXLine, animYLine, ), frames = len(animXLine), interval = 1, blit = True, repeat = False)
-    anim.save("perceptron2.gif", writer=PillowWriter(fps=50))
+    #anim.save("perceptron2.gif", writer=PillowWriter(fps=50)) #Saving the animation
+
     plt.show()
-    #anim.save("perceptron.gif", writer=PillowWriter(fps=24))

@@ -1,14 +1,15 @@
 import random
 
 #Global Variables
+lowlim, highlim = -100, 100
 learningRate = 0.1
+xLowLimit, xHighLimit, yLowLimit, yHighLimit = lowlim, highlim, lowlim, highlim
 
 def activation(sum):
     if ( sum >= 0 ):
         return 1
     else:
         return -1
-
 
 class Perceptron:
     weights = []
@@ -30,4 +31,6 @@ class Perceptron:
         w0 = self.weights[0]
         w1 = self.weights[1]
         w2 = self.weights[2]
-        return w0, w1, w2
+        yLow = -(w2 / w1) - (w0 / w1) * xLowLimit
+        yHigh = -(w2 / w1) - (w0 / w1) * xHighLimit
+        return yLow, yHigh
