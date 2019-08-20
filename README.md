@@ -10,3 +10,7 @@ A quick and easy implementation of a simple single layer perceptron. I built it 
 # Output
 ![](perceptron_simulation.gif)
 ![](final_output.png)
+
+# Learning Resources
+I got the basic idea of a perceptron from Daniel Shiffman's Tutorial. It found it very helpful for the beginners to start Perceptron and Neural Network Stuffs. 
+Here is the link of the video: https://www.youtube.com/watch?v=ntKn5TPHHAk&t=1505s
